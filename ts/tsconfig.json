@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "target": "es5",
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "../lib/"
+  },
+  "files": [
+    "index.ts",
+    "test/validator.spec.ts",
+    "typings/ramda/ramda.d.ts",
+    "typings/folktale/data.validation.d.ts"
+  ]
+}
