@@ -172,7 +172,9 @@ declare module R {
          * Returns `true` if the specified item is somewhere in the list, `false` otherwise.
          * Equivalent to `indexOf(a)(list) > -1`. Uses strict (`===`) equality checking.
          */
+        contains(a: string, list: string): boolean;
         contains<T>(a: T, list: T[]): boolean;
+        contains(a: string): (list: string) => boolean;
         contains<T>(a: T): (list: T[]) => boolean;
 
         /**
@@ -392,8 +394,10 @@ declare module R {
          * Takes a predicate and a list and returns the pair of lists of elements
          * which do and do not satisfy the predicate, respectively.
          */
-        partition<T>(fn: (a: T) => boolean, list: T): T[]
-        partition<T>(fn: (a: T) => boolean): (list: T) => T[]
+        partition(fn: (a: string) => boolean, list: string[]): string[][];
+        partition<T>(fn: (a: T) => boolean, list: T[]): T[][];
+        partition<T>(fn: (a: T) => boolean): (list: T[]) => T[][];
+        partition(fn: (a: string) => boolean): (list: string[]) => string[][];
 
         /**
          * Returns a new list by plucking the same named property off all objects in the list supplied.
@@ -578,6 +582,7 @@ declare module R {
          * Returns a new list by pulling every item at the first level of nesting out, and putting
          * them in a new array.
          */
+        unnest<T>(x: T[][]): T[];
         unnest<T>(x: T[]): T[];
 
         /**
@@ -683,6 +688,7 @@ declare module R {
          * Creates a new object by evolving a shallow copy of object, according to the transformation functions.
          */
         evolve(transformations: {[index: string]: (value: any) => any}, obj: any): any;
+        evolve(transformations: {[index: string]: (value: any) => any}): (obj: any) => any;
 
         /**
          * Returns a list of function names of object's own functions
@@ -770,6 +776,18 @@ declare module R {
          */
         merge(a: any, b: any): any;
         merge(a: any): (b: any) => any;
+
+        /**
+         * Creates a new object with the own properties of the
+         * two provided objects. If a key exists in both objects,
+         * the provided function is applied to the values associated
+         * with the key in each object, with the result being used as
+         * the value associated with the key in the returned object.
+         * The key will be excluded from the returned object if the
+         * resulting value is undefined.
+         */
+        mergeWith(f: (x:any,z:any) => any, a: any, b: any): any;
+        mergeWith(f: (x:any,z:any) => any, a: any): (b: any) => any;
 
         /**
          * Returns a partial copy of an object omitting the keys specified.
@@ -1067,6 +1085,15 @@ declare module R {
          * TODO nthArg
          */
 
+        /**
+         * Creates an object containing a single key:value pair.
+         */
+        objOf<T>(k:string, a: T): {[index:string]: T};
+        objOf<T>(k:string):(a: T) => {[index:string]: T};
+
+        /**
+         * Returns a singleton array containing the value provided.
+         */
         of<T>(x: T): T[];
         of<T>(x: T[]): T[][];
 
@@ -1217,6 +1244,7 @@ declare module R {
          * them in a new array, depth-first.
          */
         // checked
+        flatten(x: any[][]): any[];
         flatten(x: any[]): any[];
 
         /**

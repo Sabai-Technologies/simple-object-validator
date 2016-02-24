@@ -7,7 +7,6 @@ import R = require('ramda');
 import KeyValuePair = R.KeyValuePair;
 import CurriedFunction2 = R.CurriedFunction2;
 
-
 /**
  * Validate the given object according the given Schema.
  * If all the indexed properties, defined in the Schema, are successfully validated, then returns a Success
@@ -73,14 +72,8 @@ const validateProp = R.curry((schema:Schema, value:any, key:string):Validation =
  *
  *  convert :: [string, Validation] -> Validation
  */
-const convert = (pair:KeyValuePair<string, Validation>):Validation => pair[1].bimap(R.compose(R.of, toObj(pair[0])), R.identity);
+const convert = (pair:KeyValuePair<string, Validation>):Validation => pair[1].bimap(R.compose(R.of, R.objOf(pair[0])), R.identity);
 
-/**
- * Create literal object with only one indexed property which name is the given key and the value the given value.
- *
- * toObj :: string -> any -> {string:any}
- */
-const toObj = R.curry((key:string, value:any):{[index: string]: any} => R.fromPairs([[key, value]]));
 
 /**
  * Reduce a collection of Validation par applying the 'ap' method
